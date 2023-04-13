@@ -18,22 +18,71 @@
     },
     {
       "type": 1,
-      "title": "Registry (cache)",
-      "description": "Docker image registry configured as a DockerHub pull through cache",
-      "categories": ["docker"],
+      "title": "Telegraf",
+      "description": "Telegraf for docker Swarm",
+      "categories": ["monitoring"],
       "platform": "linux",
-      "logo": "https://portainer-io-assets.sfo2.digitaloceanspaces.com/logos/registry.png",
-      "image": "registry:latest",
-      "ports": ["5000/tcp"],
+      "logo": "",
+      "privileged": true,
+      "image": "telegraf:latest",
+      "restart_policy": "unless-stopped",
+      "command": "telegraf --config http://telegraf-configs.home.samir.network/swarm/telegraf.conf",
+      "hostname": "c-elk"
       "volumes": [
         {
-          "container": "/var/lib/registry"
+          "container": "/dev",
+          "bind": "/dev",
+          "readonly": true
+        },
+        {
+          "container": "/run/udev",
+          "bind": "/run/udev",
+          "readonly": true
+        },
+        {
+          "container": "/hostfs",
+          "bind": "/",
+          "readonly": true
+        },
+        {
+          "container": "/var/run/docker.sock",
+          "bind": "/var/run/docker.sock"
         }
       ],
       "env": [
         {
-          "name": "REGISTRY_PROXY_REMOTEURL",
-          "default": "https://registry-1.docker.io",
+          "name": "ENV_VAR_WITH_DEFAULT_VALUE",
+          "default": "default_value",
+          "preset": true
+        },
+        {
+          "name": "HOST_ETC",
+          "default": "/hostfs/etc",
+          "preset": true
+        },
+        {
+          "name": "HOST_PROC",
+          "default": "/hostfs/proc",
+          "preset": true
+        },
+        {
+          "name": "HOST_SYS",
+          "default": "/hostfs/sys",
+          "preset": true
+        },
+        {
+          "name": "HOST_VAR",
+          "default": "/hostfs/var",
+          "preset": true
+        },
+        {
+          "name": "HOST_RUN",
+          "default": "/hostfs/run",
+          "preset": true
+        },
+        {
+          "name": "HOST_MOUNT_PREFIX",
+          "default": "/hostfs",
           "preset": true
         }
       ]
