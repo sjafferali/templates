@@ -27,7 +27,7 @@
       "image": "telegraf:latest",
       "restart_policy": "unless-stopped",
       "command": "telegraf --config http://telegraf-configs.home.samir.network/swarm/telegraf.conf",
-      "hostname": "c-elk"
+      "hostname": "c-elk",
       "volumes": [
         {
           "container": "/dev",
